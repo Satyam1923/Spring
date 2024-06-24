@@ -1,17 +1,19 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './firebase';
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { setDoc, doc } from 'firebase/firestore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, Link } from 'react-router-dom';
-import { Oval } from 'react-loader-spinner'; 
+import { Oval } from 'react-loader-spinner';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const SignUp = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false); 
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSignUp = async (e) => {
@@ -20,7 +22,7 @@ const SignUp = () => {
 
         if (!name || !email || !password) {
             toast.error("Please fill in all the fields.");
-            setLoading(false); 
+            setLoading(false);
             return;
         }
 
@@ -39,23 +41,25 @@ const SignUp = () => {
             toast.error(err.message);
             console.log(err.message);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
+
     const fetchUserData = async () => {
-        auth.onAuthStateChanged((async (user) => {
-          console.log(user);
-          if (user) {
-            navigate('/')
-          }
-        }))
-      }
-      useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                navigate('/')
+            }
+        });
+    };
+
+    useEffect(() => {
         fetchUserData();
-      }, [])
+    }, []);
+
     return (
         <div>
-            <ToastContainer 
+            <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -69,41 +73,69 @@ const SignUp = () => {
             />
             <div className="bg-[#18181D] flex flex-col p-4">
                 <form className="flex flex-col items-center p-10 gap-5" onSubmit={handleSignUp}>
-                    <div className="w-full flex items-center justify-between p-2">
-                        <label htmlFor="name" className="font-bold">Full Name:</label>
-                        <input
-                            id="name"
-                            className="p-2 text-black"
-                            placeholder="Enter your full name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="w-full flex items-center justify-between p-2">
-                        <label htmlFor="email" className="font-bold">Email:</label>
-                        <input
-                            id="email"
-                            type="email"
-                            className="p-2 text-black"
-                            placeholder="Enter email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="w-full flex items-center gap-2 justify-between p-2">
-                        <label htmlFor="password" className="font-bold">Password:</label>
-                        <input
-                            id="password"
-                            type="password"
-                            className="p-2 text-black"
-                            placeholder="Enter password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                    <table style={{ borderCollapse: "separate", borderSpacing: "0 1em" }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ textAlign: "right", paddingRight: "10px" }}>
+                                    <label htmlFor="name" className="font-bold text-white-500">Full Name:</label>
+                                </td>
+                                <td>
+                                    <input
+                                        id="name"
+                                        className="p-2 text-black"
+                                        style={{ width: "250px" }}
+                                        placeholder="Enter your full name"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style={{ textAlign: "right", paddingRight: "10px" }}>
+                                    <label htmlFor="email" className="font-bold text-white-500">Email:</label>
+                                </td>
+                                <td>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        className="p-2 text-black"
+                                        style={{ width: "250px" }}
+                                        placeholder="Enter email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style={{ textAlign: "right", paddingRight: "10px" }}>
+                                    <label htmlFor="password" className="font-bold text-white-500">Password:</label>
+                                </td>
+                                <td style={{ display: "flex", alignItems: "center" }}>
+                                    <input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        className="p-2 text-black"
+                                        style={{ width: "250px" }}
+                                        placeholder="Enter password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                    <span
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        style={{
+                                            marginLeft: "10px",
+                                            cursor: "pointer"
+                                        }}
+                                    >
+                                        {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <button
                         type="submit"
                         className="bg-[#0f0f11] p-3 rounded-xl px-10 hover:bg-black"
