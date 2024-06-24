@@ -109,7 +109,7 @@ function RecentlyPlayed() {
 
 function Genres() {
   return (
-    <div className="bg-[#18181D] w-full h-full rounded-lg">
+    <div className="bg-[#18181D] w-full h-full rounded-lg" style={{marginTop:"50px"}}>
       <div className="h-full w-full flex flex-col p-2">
         <div className="flex h-[15%] justify-between items-center text-center pl-4 pr-4">
           <h1 className="text-2xl text-white font-medium">Genres</h1>
@@ -196,7 +196,11 @@ function TopCharts({ currentArtist ,setCurrentSong}) {
   
 
   return (
+
+    <div className="bg-[#18181D] w-full h-full rounded-lg" style={{marginTop:"50px"}}>
+
     <div className="bg-[#18181D]  w-full h-full rounded-lg">
+
       <div className="w-full h-full flex flex-col">
         <div className="flex h-[15%] justify-between items-center text-center p-1 ml-4 mr-4 mt-2">
           <h1 className="text-2xl text-white font-medium">{title}</h1>
@@ -248,7 +252,11 @@ function TopArtists({ setCurrentArtist }) {
   }, []);
 
   return (
+
+    <div className="bg-[#18181D] w-full h-full rounded-lg" style={{height:"14rem",padding:"2rem",marginTop:"2rem"}}>
+
     <div className="bg-[#18181D]  w-full h-full rounded-lg">
+
       <div className="flex flex-col h-[100%] pl-4 pr-4 gap-2 pt-2">
         <div className="flex h-[15%] justify-between items-center text-center p-1">
           <h1 className="text-2xl text-white font-medium">Top Artists</h1>
